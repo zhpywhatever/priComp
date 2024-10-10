@@ -83,3 +83,13 @@ class Review(Base):
     # Relationships
     user = relationship("User", back_populates="reviews")
     product = relationship("Product", back_populates="reviews")
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(String, primary_key=True, index=True)
+    conversation_id = Column(String, index=True)
+    content = Column(Text, nullable=False)
+    sender_id = Column(String, nullable=False)
+    timestamp = Column(String, nullable=False)

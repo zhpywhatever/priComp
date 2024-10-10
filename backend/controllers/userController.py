@@ -17,6 +17,8 @@ def auth_user(db: Session, form_data: OAuth2PasswordRequestForm):
         "id": user.id,
         "name": user.name,
         "email": user.email,
+        "role": user.role,
+        "image": user.image,
         "followers": user.followers,
         "followings": user.followings,
         "token": token

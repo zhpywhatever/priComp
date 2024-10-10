@@ -10,6 +10,7 @@ app = FastAPI()
 
 app.include_router(productRouter.router)
 app.include_router(userRouter.router)
+app.mount("/images", StaticFiles(directory="../backend/public/images"), name="images")
 
 # 允许 CORS
 app.add_middleware(

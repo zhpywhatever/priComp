@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 const AccountProfile = ({ history }) => {
   const userDetails = useSelector(state => state.userDetails);
+  console.log(userDetails);
   const { loading, user } = userDetails;
   useEffect(() => {
     if (!user) {
@@ -32,17 +33,17 @@ const AccountProfile = ({ history }) => {
           ) : (
             <>
               <Typography color="textPrimary" gutterBottom variant="h3">
-                {user.name}
+                {user?.name}
               </Typography>
               <Typography color="textSecondary" variant="body1">
-                {`来自 ${user.location} `}
+                {`来自 ${user?.location} `}
               </Typography>
               <Typography color="textSecondary" variant="body1">
-                {`个性签名： ${user.biography}`}
+                {`个性签名： ${user?.biography}`}
               </Typography>
               <Typography color="textSecondary" variant="body1">
-                我的关注:{user.followings ? user.followings.length : 0}
-                关注我的:{user.followers ? user.followers.length : 0}
+                我的关注:{user?.followings ? user.followings.length : 0}
+                关注我的:{user?.followers ? user.followers.length : 0}
               </Typography>
             </>
           )}
