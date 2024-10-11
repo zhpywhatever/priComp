@@ -129,6 +129,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProductScreen = ({ history, match }) => {
+
   const [qty, setQty] = useState(1);
   const [selectedImg, setSelectedImg] = useState(null);
   // const [currentId, setCurrentId] = useState('');
@@ -190,7 +191,7 @@ const ProductScreen = ({ history, match }) => {
     if (successProductReview) {
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-
+    console.log("match:",match)
     dispatch(listProductDetails(match.params.id));
     dispatch(listRelatedProducts(match.params.id));
   }, [dispatch, match.params.id, successProductReview]);
@@ -374,7 +375,7 @@ const ProductScreen = ({ history, match }) => {
                       </span>
                     </div>
                     <Divider />
-                    {product.reviews.length === 0 ? (
+                    {product.reviews?.length === 0 ? (
                       <>
                         <Message variant="info">没有评论发表一条吧</Message>
                         <Grid

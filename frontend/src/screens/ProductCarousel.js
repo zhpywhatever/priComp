@@ -51,10 +51,10 @@ const ProductCarousel = () => {
       <Slider {...SliderProps}>
         {products?.map(product => (
           <div
-            key={product._id}
+            key={product.id}
             // onClick={() => handleDialogOpen(product)}
           >
-            <Link to={`/product/${product._id}`}>
+            <Link to={`/product/${product.id}`}>
               <img src={product.image} alt="character" />
             </Link>
           </div>
