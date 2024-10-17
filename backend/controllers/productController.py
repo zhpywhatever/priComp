@@ -3,7 +3,7 @@ from fastapi import HTTPException, Depends
 from models.model import Product, Review, User
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
+from schemas.productSchema import ReviewBase
 from utils.utils import get_current_user
 
 
@@ -12,15 +12,6 @@ class ProductCreate(BaseModel):
     description: str
     price: float
     category: str
-
-
-class ReviewCreate(BaseModel):
-    name: str
-    rating: int
-    comment: str
-    user_id: int
-    role: str
-    image: str = None
 
 
 # 获取所有产品
@@ -35,6 +26,9 @@ def get_product_by_id(db: Session, product_id: int):
     product = db.query(Product).filter(Product.id == product_id).first()
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
+    for review in product.reviews:
+        user = db.query(User).filter(User.id == review.user_id).first()
+        review.name = user.name
     return product
 
 
@@ -59,7 +53,7 @@ def get_product_by_id(db: Session, product_id: int):
 def create_product_review(
         db: Session,
         product_id: int,
-        review: ReviewCreate,
+        review: ReviewBase,
         current_user: User = Depends(get_current_user)  # 从JWT获取当前用户
 ):
     # 查询产品是否存在

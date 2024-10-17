@@ -190,9 +190,9 @@ const ProductScreen = ({ history, match }) => {
     if (successProductReview) {
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-    //console.log("match.params.id:{match.params.id}")
-    //dispatch(listProductDetails(match.params.id));
-    //dispatch(listRelatedProducts(match.params.id));
+    console.log("match.params.id:{match.params.id}")
+    dispatch(listProductDetails(match.params.id));
+    dispatch(listRelatedProducts(match.params.id));
   }, [dispatch, match.params.id, successProductReview]);
 
   // //follow handler
