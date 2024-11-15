@@ -7,7 +7,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import re
+import urllib.parse
+
+
 
 # 初始化 Chrome 浏览器
 def init_browser():
@@ -15,7 +19,14 @@ def init_browser():
     options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    options.page_load_strategy = 'eager'
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.set_page_load_timeout(300)
+    desired_capabilities = DesiredCapabilities.CHROME
+    desired_capabilities["pageLoadStrategy"] = "none"
+    # chrome_options = Options()
+    # chrome_options.page_load_strategy = 'eager'
+    # driver = webdriver.Chrome(options=chrome_options)
     return driver
 
 # 保存登录 Cookie 到本地文件
@@ -45,25 +56,28 @@ def login_and_save_cookies():
 # 使用保存的 Cookie 自动登录并进行商品查询
 def search_product(keyword):
     driver = init_browser()
-    driver.get("https://www.jd.com/")
+    driver.get(f"https://search.jd.com/Search?keyword={urllib.parse.quote(keyword)}")
 
     # 加载已保存的 Cookie
     load_cookies(driver)
     driver.refresh()  # 刷新页面以应用 Cookie
+    login_simble = driver.find_elements(By.CLASS_NAME, 'nickname')
+    if len(login_simble) == 0:
+        login_and_save_cookies()
 
-    try:
+    # try:
         # 搜索商品
-        search_box = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "key"))
-        )
+        # search_box = WebDriverWait(driver, 10).until(
+        #     EC.element_to_be_clickable((By.ID, "key"))
+        # )
         # search_box = driver.find_element(By.ID, "J_searchbg")
-        search_box.send_keys(keyword)
-        search_box.send_keys(Keys.RETURN)  # 使用回车键来触发搜索
+        # search_box.send_keys(keyword)
+        # search_box.send_keys(Keys.RETURN)  # 使用回车键来触发搜索
         # search_box.submit()
-    except Exception as e:
-        print("搜索框不可交互:", e)
-        driver.quit()
-        return
+    # except Exception as e:
+    #     print("搜索框不可交互:", e)
+    #     driver.quit()
+    #     return
     time.sleep(5)  # 等待页面加载
 
     # 抓取商品名称和价格
@@ -97,3 +111,8 @@ def get_price_from_jd(keyword):
         login_and_save_cookies()  # 首次运行时手动登录并保存 Cookie
 
     return search_product(keyword)
+
+if __name__ == "__main__":
+    # 使用示例
+    keyword = "iPhone 14"
+    get_price_from_jd(keyword)

@@ -9,7 +9,7 @@ import re
 # 初始化 Chrome 浏览器
 def init_browser():
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
+    # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)

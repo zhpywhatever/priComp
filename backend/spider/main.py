@@ -15,13 +15,17 @@ def compare_prices(keyword):
 
     # 打印京东价格
     print("京东价格：")
-    for name, price in jd_prices[:10]:  # 只显示前5个结果
+    for name, price in jd_prices[:10]:  # 只显示前10个结果
         print(f"{name} - ¥{price}")
 
     # 打印淘宝价格
     print("\n淘宝价格：")
-    for name, price in tb_prices[:10]:  # 只显示前5个结果
+    for name, price in tb_prices[:10]:  # 只显示前10个结果
         print(f"{name} - ¥{price}")
+
+# get_product(keyword):
+
+
 
 if __name__ == '__main__':
     # 使用示例

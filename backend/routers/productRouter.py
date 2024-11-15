@@ -36,4 +36,3 @@ def get_related_product_by_id(product_id: int, db: Session = Depends(get_db)):
     return productController.get_related_product_by_id(db=db, product_id=product_id)
 
 
-
