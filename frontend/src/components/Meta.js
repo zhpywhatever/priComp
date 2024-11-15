@@ -10,7 +10,7 @@ const Meta = ({ title, descrption, keywords }) => {
   );
 };
 Meta.defaultProps = {
-  title: 'Proshop | 你想要的商品，这里都有',
+  title: 'PriComp | 你想要的商品，这里都有',
   descrption: '价格实惠，快送方便',
   keywords: '苹果手机,食品,电子商城,便宜苹果手机,苹果手机优惠券',
 };

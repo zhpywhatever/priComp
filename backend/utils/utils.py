@@ -20,12 +20,12 @@ def authenticate_user(db: Session, email: str, password: str):
 
 
 from datetime import datetime, timedelta
-from jose import JWTError, jwt
+from jose import JWTError, jwt, ExpiredSignatureError
 
 # 密钥，确保安全存储，例如使用环境变量
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = "aiyoubeinikandaole"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 # 生成访问令牌
 def create_access_token(data: dict, expires_delta: timedelta = None):
@@ -60,12 +60,18 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("user_id")
         if user_id is None:
-            raise credentials_exception
+            return credentials_exception
+    except ExpiredSignatureError:
+        return HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token 已过期，请重新登录。",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except JWTError:
-        raise credentials_exception
+        return credentials_exception
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
-        raise credentials_exception
+        return credentials_exception
     return user
 
 

@@ -33,7 +33,7 @@ const Login = ({ location, history }) => {
   return (
     <>
       <Helmet>
-        <title>登录 | Proshop</title>
+        <title>登录 | PriComp</title>
       </Helmet>
       <Box
         style={{

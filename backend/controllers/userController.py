@@ -43,12 +43,16 @@ def get_user_by_id(user_id: int, db: Session):
 
 # 更新用户个人资料
 def update_user_profile(user_update: UserUpdate, db: Session, current_user: User = Depends(get_current_user)):
-    current_user.name = user_update.name or current_user.name
-    current_user.email = user_update.email or current_user.email
-    current_user.biography = user_update.biography or current_user.biography
-    db.commit()
-    db.refresh(current_user)
-    return current_user
+    try:
+        current_user.name = user_update.name or current_user.name
+        current_user.email = user_update.email or current_user.email
+        current_user.biography = user_update.biography or current_user.biography
+        db.commit()
+        db.refresh(current_user)
+        return current_user
+    except Exception as e:
+        db.rollback()
+        return {"error": str(e)}
 
 # 注册新用户
 def register_user(user: UserCreate, db: Session):
@@ -69,24 +73,33 @@ def register_user(user: UserCreate, db: Session):
 
 # 关注用户
 def follow_user(target_user_id: int, db: Session, current_user: User = Depends(get_current_user)):
-    target_user = db.query(User).filter(User.id == target_user_id).first()
-    if not target_user:
-        raise HTTPException(status_code=404, detail="目标用户不存在")
-    if target_user.id == current_user.id:
-        raise HTTPException(status_code=403, detail="不能关注自己")
-    if current_user.id not in target_user.followers:
-        target_user.followers.append(current_user.id)
-        current_user.followings.append(target_user.id)
-        db.commit()
-    return {"message": "关注成功"}
+    try:
+        target_user = db.query(User).filter(User.id == target_user_id).first()
+        if not target_user:
+            raise HTTPException(status_code=404, detail="目标用户不存在")
+        if target_user.id == current_user.id:
+            raise HTTPException(status_code=403, detail="不能关注自己")
+        if current_user.id not in target_user.followers:
+            target_user.followers.append(current_user.id)
+            current_user.followings.append(target_user.id)
+            db.commit()
+        return {"message": "关注成功"}
+    except Exception as e:
+        db.rollback()
+        return {"error": str(e)}
 
 # 取消关注
 def unfollow_user(target_user_id: int, db: Session, current_user: User = Depends(get_current_user)):
-    target_user = db.query(User).filter(User.id == target_user_id).first()
-    if not target_user:
-        raise HTTPException(status_code=404, detail="目标用户不存在")
-    if current_user.id in target_user.followers:
-        target_user.followers.remove(current_user.id)
-        current_user.followings.remove(target_user.id)
-        db.commit()
-    return {"message": "取消关注成功"}
+    try:
+        target_user = db.query(User).filter(User.id == target_user_id).first()
+        if not target_user:
+            raise HTTPException(status_code=404, detail="目标用户不存在")
+        if current_user.id in target_user.followers:
+            target_user.followers.remove(current_user.id)
+            current_user.followings.remove(target_user.id)
+            db.commit()
+        return {"message": "取消关注成功"}
+
+    except Exception as e:
+        db.rollback()
+        return {"error": str(e)}

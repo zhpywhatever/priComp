@@ -26,6 +26,10 @@ def get_product_by_id(product_id: int, db: Session = Depends(get_db)):
 def create_product_review(product_id: int, review: ReviewBase, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return productController.create_product_review(db=db, product_id=product_id, review=review, current_user=current_user)
 
+@router.post("/api/products/{product_id}/price-history", response_model=Review)
+def get_product_price_history(product_id: int, review: ReviewBase, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return productController.get_product_price_history(db=db, product_id=product_id, review=review, current_user=current_user)
+
 
 @router.get("/api/products/{product_id}/related", response_model=List[Product])
 def get_related_product_by_id(product_id: int, db: Session = Depends(get_db)):

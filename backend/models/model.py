@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, Text, DateTime, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -64,9 +66,25 @@ class Product(Base):
     numReviews = Column(Integer, default=0)
     image = Column(String(255), nullable=True)
     category = Column(String(100), nullable=False)
-
+    countInStock = Column(Integer, default=0)
+    history_price = Column(String(500), nullable=True)
     # Relationship with Review
     reviews = relationship("Review", back_populates="product")
+
+    def update_history_price(self, new_price: float):
+        """
+        更新历史价格字段，将新的价格加入到历史记录中
+        """
+        if self.history_price:
+            # 处理现有的历史价格数据，如果历史价格存在，则拼接新的价格
+            history_data = json.loads(self.history_price)  # 假设存储为 JSON 格式
+        else:
+            history_data = []
+
+        history_data.append({'price': new_price, 'timestamp': datetime.now().isoformat()})  # 保存时间戳
+
+        self.history_price = json.dumps(history_data)  # 更新为新的历史价格数据
+
 
 # Review Model
 class Review(Base):

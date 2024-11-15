@@ -106,10 +106,10 @@ const HeroSection = ({ userInfo }) => {
             gutterBottom
           >
             {!userInfo
-              ? '你想要的东西在proshop中都能找到！'
+              ? '你想要的东西在PriComp中都能找到！'
               : userInfo.role === 'admin'
               ? '欢迎，管理员！'
-              : '你想要的东西在proshop中都能找到！'}
+              : '你想要的东西在PriComp中都能找到！'}
           </Typography>
           <Typography
             component={motion.div}

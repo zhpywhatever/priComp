@@ -52,6 +52,7 @@ import Message from '../components/Message';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
 import Meta from '../components/Meta';
 import Modal from '../components/Modal/Modal';
+import PriceHistoryChart from '../components/product/PriceHistoryChart';
 
 const useStyles = makeStyles(theme => ({
   media: {
@@ -264,7 +265,9 @@ const ProductScreen = ({ history, match }) => {
                         component="h1"
                       >
                         {product.name}
+                        
                       </Typography>
+                      
                       <Typography
                         variant="body2"
                         color="textSecondary"
@@ -272,13 +275,15 @@ const ProductScreen = ({ history, match }) => {
                       >
                         {product.description}
                       </Typography>
+                      <PriceHistoryChart />
                     </div>
-
+                      
                     <List component="div" aria-label="mailbox folders">
                       <ListItem>
                         <Typography className={classes.price}>
                           ${product.price}
                         </Typography>
+                        
                       </ListItem>
                       <Divider light />
                       <ListItem>

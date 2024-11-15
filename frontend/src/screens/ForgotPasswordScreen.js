@@ -146,7 +146,7 @@ const ForgotPasswordScreen = () => {
                 <div className={classes.des}>
                   <h2 className={classes.h2}>忘记密码了?</h2>
                   <p className={classes.text}>
-                    不要担心！找回你的密码是很容易的，只需要在下方输入您在proshop中注册的邮箱即可
+                    不要担心！找回你的密码是很容易的，只需要在下方输入您在PriComp中注册的邮箱即可
                   </p>
                 </div>
                 <div className={classes.errorsuccess}>
