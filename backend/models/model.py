@@ -67,9 +67,12 @@ class Product(Base):
     image = Column(String(255), nullable=True)
     category = Column(String(100), nullable=False)
     countInStock = Column(Integer, default=0)
-    history_price = Column(String(500), nullable=True)
+    history_price = Column(String(2000), nullable=True)
     # Relationship with Review
     reviews = relationship("Review", back_populates="product")
+    url = Column(String(255), nullable=True)
+    platform = Column(String(40), nullable=True)
+
 
     def update_history_price(self, new_price: float):
         """

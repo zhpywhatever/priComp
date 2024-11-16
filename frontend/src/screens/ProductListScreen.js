@@ -131,7 +131,7 @@ const ProductListScreen = ({ history, match }) => {
       history.push('/login');
     }
     if (successCreate) {
-      history.push(`/admin/product/${createdProduct._id}/edit`);
+      history.push(`/admin/product/${createdProduct.id}/edit`);
     } else {
       dispatch(listProducts(pageNumber));
     }
@@ -247,7 +247,7 @@ const ProductListScreen = ({ history, match }) => {
                   animate="visible"
                 >
                   {products?.map(product => (
-                    <Grid item key={product._id} lg={4} md={6} xs={12}>
+                    <Grid item key={product.id} lg={4} md={6} xs={12}>
                       <Card
                         style={{
                           display: 'flex',
@@ -352,10 +352,10 @@ const ProductListScreen = ({ history, match }) => {
                                 variant="contained"
                                 color="primary"
                                 component={RouterLink}
-                                to={`/admin/product/${product._id}/edit`}
+                                to={`/admin/product/${product.id}/edit`}
                                 startIcon={<Edit />}
                                 // onClick={() => {
-                                //   deleteHandler(customer._id);
+                                //   deleteHandler(customer.id);
                                 // }}
                                 // onClick={handleClickOpen}
                               >
@@ -439,7 +439,7 @@ function Modal({ open, handleClose, product, deleteHandler }) {
         <DialogActions>
           <Button
             onClick={() => {
-              deleteHandler(product._id);
+              deleteHandler(product.id);
             }}
             variant="outlined"
             color="secondary"

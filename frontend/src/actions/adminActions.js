@@ -127,7 +127,7 @@ export const updateUser = user => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `/api/admin/user/${user._id}`,
+      `/api/admin/user/${user.id}`,
       user,
       config
     );
@@ -243,7 +243,7 @@ export const updateProduct = product => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `/api/admin/product/${product._id}`,
+      `/api/admin/product/${product.id}`,
       product,
       config
     );
@@ -303,7 +303,7 @@ export const deliverOrder = order => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `/api/admin/order/${order._id}/deliver`,
+      `/api/admin/order/${order.id}/deliver`,
       {},
       config
     );

@@ -11,14 +11,14 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
     res.json({
-      _id: user._id,
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
       image: user.image,
       followers: user.followers,
       followings: user.followings,
-      token: generateToken(user._id),
+      token: generateToken(user.id),
     });
   } else {
     res.status(401);
@@ -30,11 +30,11 @@ const authUser = asyncHandler(async (req, res) => {
 //@router GET /api/users/profile
 //@access private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user.id);
 
   if (user) {
     res.json({
-      _id: user._id,
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
@@ -53,7 +53,7 @@ const getUserById = asyncHandler(async (req, res) => {
 
   if (user) {
     res.json({
-      _id: user.userId,
+      id: user.userId,
       name: user.name,
       email: user.email,
       role: user.role,
@@ -74,7 +74,7 @@ const getUserById = asyncHandler(async (req, res) => {
 //@router PUT /api/users/profile
 //@access private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user.id);
 
   if (user) {
     user.name = req.body.name || user.name;
@@ -87,7 +87,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
     const updatatedUser = await user.save();
     res.json({
-      _id: updatatedUser._id,
+      id: updatatedUser.id,
       name: updatatedUser.name,
       email: updatatedUser.email,
       biography: updatatedUser.biography,
@@ -118,12 +118,12 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   if (user) {
     res.status(201).json({
-      _id: user._id,
+      id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
       image: user.image,
-      token: generateToken(user._id),
+      token: generateToken(user.id),
     });
   } else {
     res.status(400);

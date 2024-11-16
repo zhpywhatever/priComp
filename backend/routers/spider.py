@@ -9,6 +9,6 @@ from utils.utils import get_current_user
 router = APIRouter()
 
 
-@router.get("/api/spider/get-product", response_model=List[Product])
-def get_product(page: int = 1, page_size: int = 10, db: Session = Depends(get_db)):
-    return spiderController.get_product(db=db, page=page, page_size=page_size)
+@router.get("/api/spider/get-product/{product_name}")
+def get_product( product_name: str, db: Session = Depends(get_db)):
+    return spiderController.get_product(db=db,product_name = product_name)

@@ -118,7 +118,7 @@ const MessengerScreen = ({ history }) => {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit('addUser', userInfo._id);
+    socket.current.emit('addUser', userInfo.id);
     socket.current.on('getUsers', users => {
       console.log(users);
     });
@@ -127,18 +127,18 @@ const MessengerScreen = ({ history }) => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get('/api/conversation/' + userInfo._id);
+        const res = await axios.get('/api/conversation/' + userInfo.id);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     getConversations();
-  }, [userInfo._id]);
+  }, [userInfo.id]);
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get('/api/message/' + currentChat?._id);
+        const res = await axios.get('/api/message/' + currentChat?.id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
@@ -149,17 +149,17 @@ const MessengerScreen = ({ history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     const message = {
-      sender: userInfo._id,
+      sender: userInfo.id,
       text: newMessage,
-      conversationId: currentChat._id,
+      conversationId: currentChat.id,
     };
 
     const receiverId = currentChat.members.find(
-      member => member !== userInfo._id
+      member => member !== userInfo.id
     );
 
     socket.current.emit('sendMessage', {
-      senderId: userInfo._id,
+      senderId: userInfo.id,
       receiverId,
       text: newMessage,
     });
@@ -186,7 +186,7 @@ const MessengerScreen = ({ history }) => {
               className={classes.chatMenuInput}
             />
             {conversations?.map(c => (
-              <div onClick={() => setCurrentChat(c)} key={c._id}>
+              <div onClick={() => setCurrentChat(c)} key={c.id}>
                 <Conversation conversation={c} currentUser={userInfo} />
               </div>
             ))}
@@ -199,8 +199,8 @@ const MessengerScreen = ({ history }) => {
                 <>
                   <div className={classes.chatBoxTop}>
                     {messages?.map(m => (
-                      <div ref={scrollRef} key={m._id}>
-                        <Message message={m} own={m.sender === userInfo._id} />
+                      <div ref={scrollRef} key={m.id}>
+                        <Message message={m} own={m.sender === userInfo.id} />
                       </div>
                     ))}
                   </div>

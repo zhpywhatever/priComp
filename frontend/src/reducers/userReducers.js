@@ -34,6 +34,7 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_REQUEST:
       return { loading: true };
     case USER_LOGIN_SUCCESS:
+      console.log("USER_LOGIN_SUCCESS:",action.payload)
       return { loading: false, userInfo: action.payload };
     case USER_LOGIN_FAIL:
       return { loading: false, error: action.payload };
@@ -60,6 +61,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
     case USER_DETAILS_REQUEST:
       return { ...state, loading: true };
     case USER_DETAILS_SUCCESS:
+      console.log("USER_DETAILS_SUCCESS:",action.payload)
       return { loading: false, user: action.payload };
     case USER_DETAILS_FAIL:
       return { loading: false, error: action.payload };

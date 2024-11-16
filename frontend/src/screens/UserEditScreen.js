@@ -39,7 +39,7 @@ const UserEditScreen = ({ history, match }) => {
       dispatch({ type: ADMIN_USER_UPDATE_RESET });
       history.push('/admin/users');
     } else {
-      if (!user.name || user._id !== userId) {
+      if (!user.name || user.id !== userId) {
         dispatch(getUserDetail(userId));
       } else {
         setName(user.name);
@@ -50,7 +50,7 @@ const UserEditScreen = ({ history, match }) => {
 
   const submitHandler = e => {
     e.preventDefault();
-    dispatch(updateUser({ _id: userId, name, email }));
+    dispatch(updateUser({ id: userId, name, email }));
   };
 
   return (

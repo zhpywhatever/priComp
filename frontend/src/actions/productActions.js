@@ -25,6 +25,7 @@ const axiosInstance = axios.create({
 export const listProducts =
   (pageNumber = '') =>
   async dispatch => {
+    // console.log("111")
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
@@ -33,12 +34,16 @@ export const listProducts =
 
       //   dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       // }, 3000);
+      // console.log("get products success0")
       const { data } = await axiosInstance.get(
         `/api/products?pageNumber=${pageNumber}`
       );
+      console.log("get products success1")
 
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      // console.log("get products success2")
     } catch (error) {
+      // console.log("get products failed1")
       dispatch({
         type: PRODUCT_LIST_FAIL,
         payload:
@@ -46,6 +51,7 @@ export const listProducts =
             ? error.response.data.message
             : error.message,
       });
+      // console.log("get products failed2")
     }
   };
 export const listProductDetails = id => async dispatch => {
@@ -56,7 +62,7 @@ export const listProductDetails = id => async dispatch => {
 
     //   dispatch({ type: PRODUCT_DETAIL_SUCCESS, payload: data });
     // }, 3000);
-
+    console.log("id:",id)
     let { data } = await axiosInstance.get(`/api/products/${id}`);
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -108,6 +114,7 @@ export const listTopProducts = () => async dispatch => {
       type: PRODUCT_TOP_SUCCESS,
       payload: data,
     });
+    console.log("get top success")
   } catch (error) {
     dispatch({
       type: PRODUCT_TOP_FAIL,

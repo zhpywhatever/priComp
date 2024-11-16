@@ -117,6 +117,7 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
   const { allProducts } = productList;
   const allCategories = () => {
     const categoryArray = [];
+    console.log("productlist: ",productList)
     allProducts?.map(product => categoryArray.push(product.category));
     return [...new Set(categoryArray)];
   };

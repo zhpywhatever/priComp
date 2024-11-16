@@ -108,15 +108,15 @@ const UserListResults = ({ users, ...rest }) => {
                 ?.map(customer => (
                   <TableRow
                     hover
-                    key={customer._id}
-                    selected={selectedCustomerIds.indexOf(customer._id) !== -1}
+                    key={customer.id}
+                    selected={selectedCustomerIds.indexOf(customer.id) !== -1}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={
-                          selectedCustomerIds.indexOf(customer._id) !== -1
+                          selectedCustomerIds.indexOf(customer.id) !== -1
                         }
-                        onChange={event => handleSelectOne(event, customer._id)}
+                        onChange={event => handleSelectOne(event, customer.id)}
                         value="true"
                       />
                     </TableCell>
@@ -160,7 +160,7 @@ const UserListResults = ({ users, ...rest }) => {
                     <TableCell>
                       <Link
                         component={RouterLink}
-                        to={`/admin/user/${customer._id}/edit`}
+                        to={`/admin/user/${customer.id}/edit`}
                       >
                         <IconButton color="primary">
                           <Edit />

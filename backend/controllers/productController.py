@@ -7,15 +7,27 @@ from starlette.responses import JSONResponse
 from models.model import Product, Review, User
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from schemas.productSchema import ReviewBase
+from schemas.productSchema import ReviewBase, ProductCreate
 from utils.utils import get_current_user
 
 
-class ProductCreate(BaseModel):
-    name: str
-    description: str
-    price: float
-    category: str
+
+
+def create_product(db: Session, product: ProductCreate):
+    new_product = Product(
+        name=product.name,
+        description=product.description,
+        price=product.price,
+        category=product.category,
+        image=product.image,
+        countInStock=product.countInStock,
+        url=product.url,
+        platform=product.platform
+    )
+    db.add(new_product)
+    db.commit()
+    db.refresh(new_product)
+    return new_product
 
 
 # 获取所有产品

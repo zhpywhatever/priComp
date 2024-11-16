@@ -216,10 +216,10 @@ const UserListScreen = ({ history }) => {
                               ?.map(customer => (
                                 <TableRow
                                   hover
-                                  key={customer._id}
+                                  key={customer.id}
                                   selected={
                                     selectedCustomerIds.indexOf(
-                                      customer._id
+                                      customer.id
                                     ) !== -1
                                   }
                                 >
@@ -227,11 +227,11 @@ const UserListScreen = ({ history }) => {
                                     <Checkbox
                                       checked={
                                         selectedCustomerIds.indexOf(
-                                          customer._id
+                                          customer.id
                                         ) !== -1
                                       }
                                       onChange={event =>
-                                        handleSelectOne(event, customer._id)
+                                        handleSelectOne(event, customer.id)
                                       }
                                       value="true"
                                     />
@@ -278,7 +278,7 @@ const UserListScreen = ({ history }) => {
                                   <TableCell>
                                     <Link
                                       component={RouterLink}
-                                      to={`/admin/user/${customer._id}/edit`}
+                                      to={`/admin/user/${customer.id}/edit`}
                                     >
                                       <IconButton color="primary">
                                         <Edit />
@@ -349,7 +349,7 @@ function Modal({ open, handleClose, customer, deleteHandler }) {
         <DialogActions>
           <Button
             onClick={() => {
-              deleteHandler(customer._id);
+              deleteHandler(customer.id);
             }}
             variant="outlined"
             color="secondary"

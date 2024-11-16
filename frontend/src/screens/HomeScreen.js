@@ -84,23 +84,24 @@ const HomeScreen = ({ match }) => {
 
   const filteredProducts = allProducts?.filter(
     product =>
-      product.name.toLowerCase().includes(keyword) ||
-      product.category.toLowerCase().includes(keyword) ||
-      product.brand.toLowerCase().includes(keyword)
+      product.name?.toLowerCase().includes(keyword) ||
+      product.category?.toLowerCase().includes(keyword) ||
+      product.brand?.toLowerCase().includes(keyword)
   );
 
   const [clickedCategory, setClickedCategory] = React.useState('');
 
   useEffect(() => {
-    console.log(clickedCategory);
+    console.log("clickedCategory",clickedCategory);
+    console.log("allProducts:",allProducts)
   }, [clickedCategory]);
   const filteredCategoryProducts = allProducts?.filter(product =>
-    product.category.toLowerCase().includes(clickedCategory.toLowerCase())
+    product.category?.toLowerCase().includes(clickedCategory?.toLowerCase())
   );
 
   const onInputChange = e => {
     e.preventDefault();
-    setKeyword(e.target.value.toLowerCase());
+    setKeyword(e.target.value?.toLowerCase());
   };
 
   useEffect(() => {
@@ -169,18 +170,18 @@ const HomeScreen = ({ match }) => {
           >
             {clickedCategory
               ? filteredCategoryProducts?.map(product => (
-                  <div key={product._id}>
+                  <div key={product.id}>
                     <Product product={product} />
                   </div>
                 ))
               : keyword
               ? filteredProducts?.map(product => (
-                  <div key={product._id}>
+                  <div key={product.id}>
                     <Product product={product} />
                   </div>
                 ))
               : products?.map(product => (
-                  <div key={product._id}>
+                  <div key={product.id}>
                     <Product product={product} />
                   </div>
                 ))}

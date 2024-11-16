@@ -1,0 +1,10 @@
+uvicorn
+python-multipart
+python-jose
+passlib
+pydantic[email]
+bcrypt
+sqlalchemy
+fastapi
+selenium
+webdriver_manager

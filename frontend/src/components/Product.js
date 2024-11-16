@@ -52,7 +52,7 @@ const Product = ({ product }) => {
   return (
     <>
       <Card elevation={1} className={classes.root}>
-        <Link to={`/product/${product._id}`}>
+        <Link to={`/product/${product.id}`}>
           <CardActionArea>
             <CardMedia
               className={classes.productImg}
@@ -65,7 +65,7 @@ const Product = ({ product }) => {
         </Link>
         <CardContent className={classes.cardcontent}>
           <Typography gutterBottom variant="subtitle1" component="h2" noWrap>
-            <Link to={`/product/${product._id}`}>{product.name}</Link>
+            <Link to={`/product/${product.id}`}>{product.name}</Link>
           </Typography>
           <Typography
             variant="body2"
@@ -85,12 +85,12 @@ const Product = ({ product }) => {
         </CardContent>
 
         <CardActions className={classes.cardActions}>
-          <Link to={`/product/${product._id}`}>
+          <Link to={`/product/${product.id}`}>
             <Button className={classes.shareBtn} size="small" color="primary">
               了解更多
             </Button>
           </Link>
-          <Link to={`/${product._id}`}>
+          <Link to={`/${product.id}`}>
             <Button size="small" color="primary">
               分享
             </Button>

@@ -133,7 +133,7 @@ export default function OrderScreen({ match, history }) {
       >
         <Container maxWidth="md">
           <React.Fragment>
-            <Typography variant="h4">订单号：{order._id}</Typography>
+            <Typography variant="h4">订单号：{order.id}</Typography>
             <Typography variant="h5" gutterBottom>
               已订商品
             </Typography>

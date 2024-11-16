@@ -81,8 +81,8 @@ const MyOrders = ({ history }) => {
             </TableHead>
             <TableBody>
               {myOrders?.map(order => (
-                <TableRow hover key={order._id}>
-                  <TableCell>{order._id}</TableCell>
+                <TableRow hover key={order.id}>
+                  <TableCell>{order.id}</TableCell>
                   {/* <TableCell>{order.customer.name}</TableCell> */}
                   <TableCell>
                     {moment(order.createdAt).format('YYYY/MM/DD')}
@@ -103,7 +103,7 @@ const MyOrders = ({ history }) => {
                     />
                   </TableCell>
                   <TableCell>
-                    <Link href={`/order/${order._id}`}>
+                    <Link href={`/order/${order.id}`}>
                       <Button variant="contained" color="primary">
                         详细信息
                       </Button>

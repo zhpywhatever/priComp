@@ -33,10 +33,10 @@ const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
 
   const product = await Product.findById(req.params.id);
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user.id);
   if (product) {
     const alreadyReviewed = product.reviews.find(
-      r => r.user.toString() === req.user._id.toString()
+      r => r.user.toString() === req.user.id.toString()
     );
 
     if (alreadyReviewed) {
@@ -48,7 +48,7 @@ const createProductReview = asyncHandler(async (req, res) => {
       name: user.name,
       rating: Number(rating),
       comment,
-      userId: user._id,
+      userId: user.id,
       user,
       role: user.role,
       image: user.image,
@@ -77,7 +77,7 @@ const getRelatedProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
   const category = await product.category;
   const relatedProduct = await Product.find({ category }).where({
-    _id: { $ne: req.params.id },
+    id: { $ne: req.params.id },
   });
   if (product) {
     res.json(relatedProduct);

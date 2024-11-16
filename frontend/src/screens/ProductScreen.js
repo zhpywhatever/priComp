@@ -208,7 +208,7 @@ const ProductScreen = ({ history, match }) => {
   // };
 
   //related product settion
-  const openPost = _id => history.push(`/product/${_id}`);
+  const openPost = id => history.push(`/product/${id}`);
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
@@ -411,7 +411,7 @@ const ProductScreen = ({ history, match }) => {
                       <List style={{ width: '100%' }}>
                         {product.reviews?.map(review => (
                           <motion.div
-                            key={review._id}
+                            key={review.id}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1 }}
@@ -639,14 +639,14 @@ const ProductScreen = ({ history, match }) => {
                   <Divider />
                   <div className={classes.recommendedPosts}>
                     {relatedProducts?.map(
-                      ({ rating, price, numReviews, name, image, _id }) => (
+                      ({ rating, price, numReviews, name, image, id }) => (
                         <div
                           style={{
                             margin: '20px 20px 20px 0px',
                             cursor: 'pointer',
                           }}
-                          onClick={() => openPost(_id)}
-                          key={_id}
+                          onClick={() => openPost(id)}
+                          key={id}
                         >
                           <Typography gutterBottom variant="h4">
                             {name}

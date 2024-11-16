@@ -80,12 +80,12 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
   await user.save();
   res.status(200).json({
-    _id: user._id,
+    id: user.id,
     name: user.name,
     email: user.email,
     role: user.role,
     image: user.image,
-    token: generateToken(user._id),
+    token: generateToken(user.id),
   });
 });
 

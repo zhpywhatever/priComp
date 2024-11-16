@@ -46,7 +46,7 @@ const reviewSchema = new mongoose.Schema({
 //     },
 //     {
 //       $group: {
-//         _id: '$bootcamp',
+//         id: '$bootcamp',
 //         averageRating: { $avg: '$rating' },
 //       },
 //     },

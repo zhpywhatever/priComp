@@ -20,7 +20,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
   } else {
     const order = new Order({
       orderItems,
-      user: req.user._id,
+      user: req.user.id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
@@ -76,7 +76,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 //@router GET /api/orders/myorders
 //@access private
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user.id });
   res.json(orders);
 });
 

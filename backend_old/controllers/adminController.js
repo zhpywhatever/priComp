@@ -50,7 +50,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
     const updatatedUser = await user.save();
     res.json({
-      _id: updatatedUser._id,
+      id: updatatedUser.id,
       name: updatatedUser.name,
       email: updatatedUser.email,
       role: updatatedUser.role,
@@ -81,7 +81,7 @@ const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: '实例 名字',
     price: 0,
-    user: req.user._id,
+    user: req.user.id,
     image: '/images/sample.jpg',
     brand: '实例 品牌',
     category: '实例 分类',

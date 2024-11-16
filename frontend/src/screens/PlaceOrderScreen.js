@@ -92,7 +92,7 @@ export default function PlaceOrderScreen({ history }) {
       history.push('/');
     }
     if (success) {
-      history.push(`/order/${order._id}`);
+      history.push(`/order/${order.id}`);
     }
     // eslint-disable-next-line
   }, [history, success, userInfo]);

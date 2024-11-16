@@ -30,6 +30,15 @@ class ProductBase(BaseModel):
     price: float
     category: str
 
+class ProductCreate(BaseModel):
+    name: str
+    description: str
+    price: float
+    category: str
+    image: str
+    countInStock: int
+    url: str
+    platform: str
 
 class Product(ProductBase):
     id: int
@@ -39,5 +48,8 @@ class Product(ProductBase):
     reviews: List[Review] = []  # 添加 reviews 数组
     countInStock: Optional[int] = None
     historyPrice: Optional[List[PriceHistory]] = None
+    url: Optional[str] = None
+    platform: Optional[str] = None
+
     class Config:
         orm_mode = True

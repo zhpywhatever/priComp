@@ -60,7 +60,7 @@ const ProductEditScreen = ({ history, match }) => {
       dispatch({ type: ADMIN_PRODUCT_UPDATE_RESET });
       history.push('/admin/products');
     } else {
-      if (!product.name || product._id !== productId) {
+      if (!product.name || product.id !== productId) {
         dispatch(listProductDetail(productId));
       } else {
         setName(product.name);
@@ -113,7 +113,7 @@ const ProductEditScreen = ({ history, match }) => {
 
     dispatch(
       updateProduct({
-        _id: productId,
+        id: productId,
         name,
         price,
         image,

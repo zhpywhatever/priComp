@@ -175,24 +175,24 @@ const OrderListScreen = ({ history }) => {
                             {orders.slice(0, limit)?.map(order => (
                               <TableRow
                                 hover
-                                key={order._id}
+                                key={order.id}
                                 selected={
-                                  selectedCustomerIds.indexOf(order._id) !== -1
+                                  selectedCustomerIds.indexOf(order.id) !== -1
                                 }
                               >
                                 <TableCell padding="checkbox">
                                   <Checkbox
                                     checked={
-                                      selectedCustomerIds.indexOf(order._id) !==
+                                      selectedCustomerIds.indexOf(order.id) !==
                                       -1
                                     }
                                     onChange={event =>
-                                      handleSelectOne(event, order._id)
+                                      handleSelectOne(event, order.id)
                                     }
                                     value="true"
                                   />
                                 </TableCell>
-                                <TableCell>{order._id}</TableCell>
+                                <TableCell>{order.id}</TableCell>
                                 <TableCell>
                                   <Box
                                     style={{
@@ -246,7 +246,7 @@ const OrderListScreen = ({ history }) => {
                                 <TableCell>
                                   <Link
                                     component={RouterLink}
-                                    to={`/order/${order._id}`}
+                                    to={`/order/${order.id}`}
                                   >
                                     <Button variant="contained" color="primary">
                                       详细信息
