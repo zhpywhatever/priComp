@@ -1,6 +1,6 @@
 import concurrent.futures
-from tb import get_price_from_tb
-from jd import get_price_from_jd
+from spider.tb import get_price_from_tb
+from spider.jd import get_price_from_jd
 
 # 比较价格的函数
 def get_lowest(keyword):

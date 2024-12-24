@@ -8,11 +8,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-import re
-import urllib.parse
+from spider import init_browser, driver
 
 
-driver = None
 # 初始化 Chrome 浏览器
 def init_browser():
     global driver
@@ -105,7 +103,7 @@ def search_product(keyword):
     # for title, price in results:
     #     print(f"{title} - ¥{price}")
 
-    driver.quit()
+    # driver.quit()
     return results
 
 # 程序主入口

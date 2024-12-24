@@ -125,4 +125,4 @@ def get_product_price_history(db: Session, product_id: int):
     product = db.query(Product).filter(Product.id == product_id).first()
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    return product.historyPrice
+    return product.history_price

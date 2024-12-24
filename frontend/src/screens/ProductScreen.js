@@ -41,6 +41,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { red } from '@material-ui/core/colors';
 import { motion } from 'framer-motion';
 import moment from 'moment';
+import taobaoIcon from '../svgs/taobao.svg'; // 根据图片路径调整
+import jdIcon from '../svgs/jd.svg'; // 根据图片路径调整
 import {
   listProductDetails,
   createProductReview,
@@ -213,6 +215,15 @@ const ProductScreen = ({ history, match }) => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
+  const gotoUrl = (url) => {
+    console.log("gotoUrl:",url)
+    if (url) {
+      window.open(url, '_blank'); // 在新标签页打开链接
+    } else {
+      console.error('URL 不存在');
+    }
+  };
+
   return (
     <>
       <IconButton
@@ -275,7 +286,7 @@ const ProductScreen = ({ history, match }) => {
                       >
                         {product.description}
                       </Typography>
-                      <PriceHistoryChart />
+                      <PriceHistoryChart productId={product.id} />
                     </div>
                       
                     <List component="div" aria-label="mailbox folders">
@@ -298,6 +309,7 @@ const ProductScreen = ({ history, match }) => {
                     </List>
                   </Paper>
                   <Paper className={classes.paper}>
+                    
                     <List
                       component="div"
                       className={classes.root}
@@ -308,6 +320,8 @@ const ProductScreen = ({ history, match }) => {
                         <Typography>${product.price}</Typography>
                       </ListItem>
                       <Divider />
+                      {product.platform === 'zy' ? (
+                        <>
                       <ListItem className={classes.listitem} button divider>
                         <Typography>状态:</Typography>
                         <Typography>
@@ -345,7 +359,6 @@ const ProductScreen = ({ history, match }) => {
                           )}
                         </FormControl>
                       </ListItem>
-                      <Divider light />
                       {product.countInStock === 0 ? (
                         <Message variant="info">
                           该商品已经售罄啦，看看其他商品哦
@@ -366,6 +379,34 @@ const ProductScreen = ({ history, match }) => {
                           </Typography>
                         </ListItem>
                       )}
+                      </>
+                      ):(
+                        <>
+                          <ListItem className={classes.listitem} button divider>
+                        <Typography>平台:</Typography>
+                        <Typography>
+                          {product.platform == 'tb' ? '淘宝' : '京东'}
+                        </Typography>
+                        </ListItem>
+                        <ListItem className={classes.listitem}>
+                          <Typography style={{ width: '100%' }}>
+                            <Button
+                              startIcon={product.platform === 'tb'?<img src={taobaoIcon} alt="taobao" style={{ width: 24, height: 24 }}  />:<img src={jdIcon} alt="jingdong" style={{ width: 24, height: 24 }}  />} 
+                              onClick={() => gotoUrl(product.url)}
+                              variant="contained"
+                              color="primary"
+                              className={classes.addtocartbtn}
+                              disabled={product.url === null}
+                            >
+                              前往原网页购物
+                            </Button>
+                          </Typography>
+                        </ListItem>
+                        </>
+                      )}
+                      <Divider light />
+
+                      
                     </List>
                   </Paper>
                 </Grid>

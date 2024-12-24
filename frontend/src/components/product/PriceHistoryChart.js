@@ -24,7 +24,8 @@ const PriceHistoryChart = ({ productId }) => {
     const fetchPriceHistory = async () => {
       try {
         const response = await axios.get(`/api/products/${productId}/price-history`);
-        setPriceData(response.data); // 假设返回的数据结构是 [{ price: 100, timestamp: "2023-01-01" }, ...]
+        console.log("response.data:",response.data)
+        setPriceData(JSON.parse(response.data)); // 假设返回的数据结构是 [{ price: 100, timestamp: "2023-01-01" }, ...]
       } catch (error) {
         console.error("Error fetching price history", error);
       } finally {
@@ -37,8 +38,9 @@ const PriceHistoryChart = ({ productId }) => {
 
   // 格式化数据供 Chart.js 使用
   const getChartData = () => {
-    const labels = priceData.map(item => item.timestamp); // 提取时间戳作为标签
-    const prices = priceData.map(item => item.price); // 提取价格作为数据
+    console.log("priceData:",priceData)
+    const labels = priceData?.map(item => item.timestamp); // 提取时间戳作为标签
+    const prices = priceData?.map(item => item.price); // 提取价格作为数据
 
     return {
       labels,
@@ -73,7 +75,7 @@ const PriceHistoryChart = ({ productId }) => {
     scales: {
       x: {
         type: 'category',
-        labels: priceData.map(item => item.timestamp), // 确保标签正确显示
+        labels: priceData?.map(item => item.timestamp), // 确保标签正确显示
         ticks: {
           autoSkip: true, // 自动跳过重复的标签
           maxRotation: 45, // 如果标签过多，旋转标签
@@ -93,6 +95,9 @@ const PriceHistoryChart = ({ productId }) => {
     <div>
       <Button onClick={() => setIsVisible(!isVisible)} style={{ backgroundColor: 'rgb(32, 150, 243)',color:'white',marginTop:'20px' }}>
         {isVisible ? '隐藏历史价格' : '显示历史价格'}
+      </Button>
+      <Button onClick={() => setIsVisible(!isVisible)} style={{ backgroundColor: 'rgb(32, 150, 243)',color:'white',marginTop:'20px', marginLeft:"20px" }}>
+        更新当前价格
       </Button>
 
       {loading ? (
