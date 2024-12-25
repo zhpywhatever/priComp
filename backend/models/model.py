@@ -72,6 +72,7 @@ class Product(Base):
     reviews = relationship("Review", back_populates="product")
     url = Column(String(255), nullable=True)
     platform = Column(String(40), nullable=True)
+    platform_id = Column(Integer, nullable=True)
 
 
     def update_history_price(self, new_price: float):

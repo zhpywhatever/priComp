@@ -15,18 +15,20 @@ def get_lowest(keyword):
 
     # 打印京东价格
     print("京东价格：")
-    lowest_in_jd = jd_products[0]
-    lowest_in_tb = tb_products[0]
-    for product in jd_products[:10]:  # 只显示前10个结果
-        if product[1] < lowest_in_jd[1]:
-            lowest_in_jd = product
+    lowest_in_jd = jd_products[0] if jd_products else ("", float('inf'), "", "")
+    lowest_in_tb = tb_products[0] if tb_products else ("", float('inf'), "", "")
+    for product in jd_products:  # 只显示前10个结果
+        if isinstance(product, (list, tuple)) and len(product) > 1:
+            if product[1] < lowest_in_jd[1]:
+                lowest_in_jd = product
         print(f"{product[0]} - ¥{product[1]}")
 
     # 打印淘宝价格
     print("\n淘宝价格：")
-    for product in tb_products[:10]:  # 只显示前10个结果
-        if product[1] < lowest_in_jd[1]:
-            lowest_in_jd = product
+    for product in tb_products:  # 只显示前10个结果
+        if isinstance(product, (list, tuple)) and len(product) > 1:
+            if product[1] < lowest_in_jd[1]:
+                lowest_in_jd = product
         print(f"{product[0]} - ¥{product[1]}")
 
     return lowest_in_jd, lowest_in_tb

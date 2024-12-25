@@ -1,5 +1,9 @@
+from datetime import datetime
+from numbers import Number
+
 from pydantic import BaseModel
 from typing import List, Optional
+from pydantic import BaseModel, Field, validator
 
 
 # Pydantic model for Review
@@ -22,6 +26,13 @@ class PriceHistory(BaseModel):
     price: float
     timestamp: str
 
+    def to_dict(self):
+        # 返回一个字典，timestamp 会被格式化为 'YYYY-MM-DD'
+        return {
+            "price": self.price,
+            "timestamp": self.timestamp  # 格式化时间到天
+        }
+
 
 # Pydantic model for Product
 class ProductBase(BaseModel):
@@ -35,10 +46,19 @@ class ProductCreate(BaseModel):
     description: str
     price: float
     category: str
-    image: str
+    image: Optional[str] = None  # 设置为可选字段，默认值为 None
     countInStock: int
+    historyPrice: Optional[List[PriceHistory]] = None
     url: str
     platform: str
+    platform_id: Optional[int] = None
+
+    def __post_init__(self):
+        # 自动生成当前价格的历史记录
+        if self.historyPrice is None:
+            self.historyPrice = [
+                PriceHistory(price=self.price, timestamp=datetime.now().isoformat())
+            ]
 
 class Product(ProductBase):
     id: int
@@ -50,6 +70,7 @@ class Product(ProductBase):
     historyPrice: Optional[List[PriceHistory]] = None
     url: Optional[str] = None
     platform: Optional[str] = None
+    platform_id: Optional[int] = None
 
     class Config:
         orm_mode = True

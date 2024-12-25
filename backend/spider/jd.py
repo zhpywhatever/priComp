@@ -4,7 +4,7 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
+from spider.webdriver_manage_extend import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -13,17 +13,19 @@ from spider import init_browser, driver
 
 # 初始化 Chrome 浏览器
 def init_browser():
-    global driver
-    if not driver:
-        options = webdriver.ChromeOptions()
-        # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.page_load_strategy = 'eager'
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        driver.set_page_load_timeout(300)
-        desired_capabilities = DesiredCapabilities.CHROME
-        desired_capabilities["pageLoadStrategy"] = "none"
+    # global driver
+    # if not driver:
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.page_load_strategy = 'eager'
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.maximize_window()
+
+    driver.set_page_load_timeout(300)
+    desired_capabilities = DesiredCapabilities.CHROME
+    desired_capabilities["pageLoadStrategy"] = "none"
     # chrome_options = Options()
     # chrome_options.page_load_strategy = 'eager'
     # driver = webdriver.Chrome(options=chrome_options)
@@ -44,8 +46,7 @@ def load_cookies(driver, filename="jd_cookies.json"):
             driver.add_cookie(cookie)
 
 # 京东登录和保存 Cookie
-def login_and_save_cookies():
-    driver = init_browser()
+def login_and_save_cookies(driver):
     driver.get("https://passport.jd.com/new/login.aspx")
     print("请手动登录京东账户...")
     time.sleep(30)  # 给用户足够时间手动登录
@@ -63,10 +64,11 @@ def search_product(keyword):
     load_cookies(driver)
     driver.refresh()  # 刷新页面以应用 Cookie
     # driver.get(f"https://search.jd.com/Search?keyword={urllib.parse.quote(keyword)}")
-    time.sleep(1)
+    time.sleep(2)
     login_symbol = driver.find_elements(By.CLASS_NAME, 'nickname')
     while len(login_symbol) == 0:
-        login_and_save_cookies()
+        driver.refresh()  # 刷新页面以应用 Cookie
+        login_and_save_cookies(driver)
         login_symbol = driver.find_elements(By.CLASS_NAME, 'nickname')
 
     try:
@@ -83,9 +85,10 @@ def search_product(keyword):
         driver.quit()
         return
     time.sleep(3)  # 等待页面加载
-
+    driver.execute_script('window.scrollTo(0,1000)')  # 横坐标不变，纵坐标 滚动到1000像素点
+    time.sleep(2)  # 等待一段时间，方便查看滚动的效果
     # 抓取商品名称和价格
-    product_elements = driver.find_elements(By.XPATH, '//*[@id="J_goodsList"]/ul/li')
+    product_elements = driver.find_elements(By.XPATH, '//*[@id="J_goodsList"]/ul/li[*]')
     results = []
     for product in product_elements[:10]:  # 获取前10个商品
         try:
@@ -94,7 +97,12 @@ def search_product(keyword):
             price = float(price_text.replace(',', ''))
             url = f"https://item.jd.com/{product.get_attribute('data-sku')}.html"
             img = product.find_element(By.CSS_SELECTOR, "div.p-img a img").get_attribute('src')
-            results.append((title, price, url, img))
+            id_str = product.find_element(By.XPATH, "./div").get_attribute('id').replace("warecard_", "")
+            if id_str:
+                id = int(id_str)
+            if (img != None):
+                results.append((title, price, url, img, id))
+                print(f"{title} - ¥{price}")
         except Exception as e:
             print("解析商品信息时出错:", e)
 

@@ -1,4 +1,5 @@
 import json
+from sys import platform
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, Depends
@@ -21,8 +22,10 @@ def create_product(db: Session, product: ProductCreate):
         category=product.category,
         image=product.image,
         countInStock=product.countInStock,
+        history_price=json.dumps([item.to_dict() for item in product.historyPrice]),
         url=product.url,
-        platform=product.platform
+        platform=product.platform,
+        platform_id=product.platform_id
     )
     db.add(new_product)
     db.commit()

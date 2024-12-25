@@ -175,7 +175,7 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
           <></>
         )}
 
-        <Button
+        {/* <Button
           aria-controls="customized-menu"
           aria-haspopup="true"
           variant="contained"
@@ -185,8 +185,19 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
           startIcon={<FilterListIcon />}
         >
           筛选
+        </Button> */}
+        <Button
+          aria-controls="customized-menu"
+          aria-haspopup="true"
+          variant="contained"
+          color="primary"
+          onClick={handleClick}
+          className={classes.btn}
+          startIcon={<FilterListIcon />}
+        >
+          搜索
         </Button>
-        <StyledMenu
+        {/* <StyledMenu
           id="customized-menu"
           anchorEl={anchorEl}
           keepMounted
@@ -207,7 +218,7 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
               <ListItemText primary={category} />
             </StyledMenuItem>
           ))}
-        </StyledMenu>
+        </StyledMenu> */}
       </div>
     </div>
   );

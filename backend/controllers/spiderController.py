@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
 from models.model  import User
@@ -8,7 +10,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from spider.main import get_lowest
 from controllers import productController
 from models.model import Product
-from schemas.productSchema import ProductCreate
+from schemas.productSchema import ProductCreate, PriceHistory
 
 
 def get_product(db: Session,product_name:str):
@@ -21,8 +23,11 @@ def get_product(db: Session,product_name:str):
         category="",
         image=lowest[3],
         countInStock=0,
+        historyPrice = [
+        PriceHistory(price=lowest[1], timestamp=datetime.now().date().isoformat())
+    ],
         url=lowest[2],
-        platform='jd' if lowest[0] == lowest_in_jd[0] else 'tb'
-
+        platform='jd' if lowest[0] == lowest_in_jd[0] else 'tb',
+        platform_id = lowest[4]
     )
     return productController.create_product(db=db, product=new_product)
