@@ -111,10 +111,11 @@ const useStyles = makeStyles(theme => {
     },
   };
 });
-const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
+const SearchBox = ({ keyword, onSearch, clearSearch, ...props }) => {
   const classes = useStyles();
   const productList = useSelector(state => state.productList);
   const { allProducts } = productList;
+  
   const allCategories = () => {
     const categoryArray = [];
     console.log("productlist: ",productList)
@@ -132,48 +133,32 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
     setAnchorEl(null);
   };
 
-  const clickIngredient = value => {
-    setClickedCategory(value);
-    setAnchorEl(null);
-  };
-  const clearCategory = () => {
-    setClickedCategory('');
+  const handleSearch = () => {
+    
+      onSearch(keyword); // 调用传递的搜索回调函数
+    
   };
 
+  const handleClear = () => {
+    clearSearch(); // 调用传递的清除回调函数
+  };
+  
+
   return (
-    <div className={clickedCategory ? classes.wrapper : classes.noClikWrapper}>
-      {!clickedCategory ? (
+    <div className={  classes.noClikWrapper}>
+      {
         <div className={classes.inputWrapper}>
           <SearchRounded color="inherit" />
           <input
             className={classes.input}
             placeholder="搜索商品、类别、品牌..."
-            {...res}
+            value={keyword}
+            {...props}
           />
         </div>
-      ) : (
-        <div className={classes.searchInfo}>
-          <Typography variant="h3" noWrap>
-            搜索类别 {clickedCategory}的结果：
-          </Typography>
-        </div>
-      )}
+      }
       <div className={classes.btnWrapper}>
-        {clickedCategory ? (
-          <Button
-            aria-controls="customized-menu"
-            aria-haspopup="true"
-            variant="outlined"
-            color="secondary"
-            onClick={clearCategory}
-            className={classes.btn}
-            startIcon={<HighlightOffIcon />}
-          >
-            取消类别筛选
-          </Button>
-        ) : (
-          <></>
-        )}
+        
 
         {/* <Button
           aria-controls="customized-menu"
@@ -186,12 +171,21 @@ const SearchBox = ({ clickedCategory, setClickedCategory, ...res }) => {
         >
           筛选
         </Button> */}
+        {keyword && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleClear}
+            className={classes.btn}
+            startIcon={<HighlightOffIcon />}
+          >
+            清除搜索
+          </Button>
+        )}
         <Button
-          aria-controls="customized-menu"
-          aria-haspopup="true"
           variant="contained"
           color="primary"
-          onClick={handleClick}
+          onClick={handleSearch}
           className={classes.btn}
           startIcon={<FilterListIcon />}
         >

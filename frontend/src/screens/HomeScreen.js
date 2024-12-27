@@ -14,6 +14,7 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import Masonry from 'react-masonry-css';
 import Product from '../components/Product';
 import Message from '../components/Message';
+import FilterMenu from '../components/FilterMenu';
 import SkeletonArticle from '../skeletons/SkeletonArticle';
 import SearchBox from '../components/SearchBox';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -22,6 +23,13 @@ import ProductCarousel from './ProductCarousel';
 import HeroSection from '../components/HeroSection';
 import Pricing from '../components/Pricing';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8888', // 设置基础 URL
+  timeout: 10000,                    // 可选：请求超时时间
+});
 
 const useStyles = makeStyles(theme => {
   return {
@@ -73,21 +81,37 @@ function ScrollTop(props) {
 }
 
 const HomeScreen = ({ match }) => {
+  const history = useHistory();
+
   const pageNumber = match.params.pageNumber || 1;
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList);
   const { loading, error, allProducts, products, page, pages } = productList;
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
-
+  const [filters, setFilters] = useState({
+    priceRange: [0, 1000],
+    rating: 0,
+    brand: '',
+    inStock: false,
+  });
+  
   const [keyword, setKeyword] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false); // 是否在搜索状态
+  const filteredProducts = allProducts?.filter(product => {
+    const matchesPrice =
+      product.price >= filters.priceRange[0] &&
+      product.price <= filters.priceRange[1];
+    const matchesRating = product.rating >= filters.rating;
+    const matchesBrand = !filters.brand || product.brand === filters.brand;
+    const matchesStock = !filters.inStock || product.countInStock > 0;
+  
+    return matchesPrice && matchesRating && matchesBrand && matchesStock;
+  });
+  
 
-  const filteredProducts = allProducts?.filter(
-    product =>
-      product.name?.toLowerCase().includes(keyword) ||
-      product.category?.toLowerCase().includes(keyword) ||
-      product.brand?.toLowerCase().includes(keyword)
-  );
+  
 
   const [clickedCategory, setClickedCategory] = React.useState('');
 
@@ -107,6 +131,16 @@ const HomeScreen = ({ match }) => {
   useEffect(() => {
     dispatch(listProducts(pageNumber));
   }, [dispatch, pageNumber, userInfo]);
+
+  const handleSearch = async (query) => {
+    history.push('/search',{ key: keyword} )
+  };
+
+  const clearSearch = () => {
+    setIsSearching(false); // 清除搜索状态
+    setSearchResults([]);
+    setKeyword('');
+  };
 
   const classes = useStyles();
   const breakpoints = {
@@ -144,9 +178,14 @@ const HomeScreen = ({ match }) => {
 
           <SearchBox
             onChange={onInputChange}
-            clickedCategory={clickedCategory}
-            setClickedCategory={setClickedCategory}
+            onSearch={handleSearch}
+            keyword={keyword}
+            clearSearch={clearSearch}
           />
+          
+
+            
+
           {!clickedCategory && !keyword && (
             <div className={classes.new}>
               <WhatshotIcon color="secondary" />
@@ -155,6 +194,12 @@ const HomeScreen = ({ match }) => {
                 商品上新
               </span>
             </div>
+          )}
+
+          {keyword && (
+            <Box display="flex" flexDirection="column"  marginBottom="10px" marginRight="1rem">
+            <FilterMenu filters={filters} setFilters={setFilters} />
+          </Box>
           )}
 
           {/* //masonry-css */}
