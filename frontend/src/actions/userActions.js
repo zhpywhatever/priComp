@@ -54,9 +54,15 @@ export const login = (username, password) => async dispatch => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     };
+    // 使用 URLSearchParams 格式化请求体
+    const params = new URLSearchParams();
+    params.append('username', username);
+    params.append('password', password);
+
+    // 发送请求
     const { data } = await axiosInstance.post(
       '/api/users/login',
-      { username, password },
+      params,  // 发送 URL 编码的表单数据
       config
     );
     

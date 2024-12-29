@@ -41,6 +41,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { red } from '@material-ui/core/colors';
 import { motion } from 'framer-motion';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
+
 import taobaoIcon from '../svgs/taobao.svg'; // 根据图片路径调整
 import jdIcon from '../svgs/jd.svg'; // 根据图片路径调整
 import {
@@ -191,6 +193,7 @@ const ProductScreen = ({ history, match }) => {
   // } = userUnfollow;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (successProductReview) {
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
@@ -215,6 +218,14 @@ const ProductScreen = ({ history, match }) => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
   };
 
+  const handleBack = () => {
+    if (history.length > 1) {
+      history.goBack();  // 返回上一页
+    } else {
+      history.push('/'); // 如果没有上一页，则跳转到首页
+    }
+  };
+
   const gotoUrl = (url) => {
     console.log("gotoUrl:",url)
     if (url) {
@@ -227,13 +238,12 @@ const ProductScreen = ({ history, match }) => {
   return (
     <>
       <IconButton
-        className={classes.margin}
-        style={{ marginBottom: '1.5rem' }}
-        component={RouterLink}
-        to="/"
-      >
-        <ArrowBackIcon />
-      </IconButton>
+      className={classes.margin}
+      style={{ marginBottom: '1.5rem' }}
+      onClick={handleBack}
+    >
+      <ArrowBackIcon />
+    </IconButton>
 
       {loading ? (
         [1, 2, 3, 4, 5]?.map(n => <SkeletonArticle key={n}></SkeletonArticle>)

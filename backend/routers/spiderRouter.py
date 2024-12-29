@@ -12,3 +12,8 @@ router = APIRouter()
 @router.get("/api/spider/get-product/{product_name}")
 def get_product( product_name: str, db: Session = Depends(get_db)):
     return spiderController.get_product(db=db,product_name = product_name)
+
+
+@router.get("/api/spider/get-products/{product_name}")
+def get_product( product_name: str, db: Session = Depends(get_db)):
+    return spiderController.get_products(db=db,product_name = product_name)

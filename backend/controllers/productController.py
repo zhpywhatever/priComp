@@ -40,6 +40,49 @@ def get_products(db: Session, page: int = 1, page_size: int = 10):
     return products
 
 
+def get_filtered_products(db: Session, filters: dict, page: int, page_size: int):
+    query = db.query(Product)
+
+    # Apply keyword filter
+    if filters.get("keyword"):
+        query = query.filter(Product.name.contains(filters["keyword"]))
+
+    # Apply price range filter
+    if filters.get("priceRange") and len(filters["priceRange"]) == 2:
+        query = query.filter(
+            Product.price >= filters["priceRange"][0],
+            Product.price <= filters["priceRange"][1],
+        )
+
+    # Apply rating filter
+    if filters.get("rating") is not None:
+        query = query.filter(Product.rating >= filters["rating"])
+
+    # Apply brand filter
+    if filters.get("platform"):
+        query = query.filter(Product.platform == filters["platform"])
+
+    # Apply in-stock filter
+    if filters.get("inStock") is not None:
+        if filters["inStock"]:
+            query = query.filter(Product.countInStock > 0)
+
+    # Pagination
+    total_products = query.count()  # Total number of products matching the filters
+    products = query.offset((page - 1) * page_size).limit(page_size).all()
+
+    # Calculate total pages
+    total_pages = (total_products + page_size - 1) // page_size  # Ceil division
+
+    return {
+        "products": products,
+        "total_products": total_products,
+        "total_pages": total_pages,
+        "current_page": page,
+        "page_size": page_size,
+    }
+
+
 # 获取单个产品
 def get_product_by_id(db: Session, product_id: int):
     product = db.query(Product).filter(Product.id == product_id).first()
@@ -114,7 +157,7 @@ def get_related_product_by_id(db: Session, product_id: int):
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    related_products = db.query(Product).filter(Product.category == product.category, Product.id != product.id).all()
+    related_products = db.query(Product).filter(Product.category == product.category, Product.id != product.id).limit(5).all()
     return related_products
 
 

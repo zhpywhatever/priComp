@@ -33,7 +33,18 @@ def get_lowest(keyword):
 
     return lowest_in_jd, lowest_in_tb
 
-# get_product(keyword):
+def spider_get_products(keyword):
+    # 使用线程池并行运行两个获取价格的函数
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_jd = executor.submit(get_price_from_jd, keyword)
+        future_tb = executor.submit(get_price_from_tb, keyword)
+
+        # 获取结果
+        jd_products = future_jd.result()
+        tb_products = future_tb.result()
+
+
+    return jd_products, tb_products
 
 
 

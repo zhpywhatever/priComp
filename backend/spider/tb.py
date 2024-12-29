@@ -20,8 +20,17 @@ def init_browser():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.page_load_strategy = 'eager'
+    options.add_argument("--incognito")
+    options.add_argument("--disable-gpu")
+    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
+    options.add_experimental_option("excludeSwitches", ['enable-automation']);
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     driver.maximize_window()
+    driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+        "source": """
+            Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+        """
+    })
 
     driver.set_page_load_timeout(300)
     desired_capabilities = DesiredCapabilities.CHROME

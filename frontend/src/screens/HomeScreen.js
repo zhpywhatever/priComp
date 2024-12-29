@@ -92,7 +92,7 @@ const HomeScreen = ({ match }) => {
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     rating: 0,
-    brand: '',
+    platform: '',
     inStock: false,
   });
   
@@ -104,10 +104,10 @@ const HomeScreen = ({ match }) => {
       product.price >= filters.priceRange[0] &&
       product.price <= filters.priceRange[1];
     const matchesRating = product.rating >= filters.rating;
-    const matchesBrand = !filters.brand || product.brand === filters.brand;
+    const matchesPlatform = !filters.platform || product.platform === filters.platform;
     const matchesStock = !filters.inStock || product.countInStock > 0;
   
-    return matchesPrice && matchesRating && matchesBrand && matchesStock;
+    return matchesPrice && matchesRating && matchesPlatform && matchesStock;
   });
   
 
@@ -177,6 +177,7 @@ const HomeScreen = ({ match }) => {
           {!clickedCategory && !keyword && <ProductCarousel />}
 
           <SearchBox
+            onClick={handleSearch}
             onChange={onInputChange}
             onSearch={handleSearch}
             keyword={keyword}

@@ -40,7 +40,7 @@ export const listProducts =
       );
       console.log("get products success1")
 
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.products });
       // console.log("get products success2")
     } catch (error) {
       // console.log("get products failed1")

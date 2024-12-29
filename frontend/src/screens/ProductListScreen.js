@@ -332,7 +332,7 @@ const ProductListScreen = ({ history, match }) => {
                                 style={{ paddingLeft: '0.5rem' }}
                                 variant="body2"
                               >
-                                {product.brand}
+                                {product.platform}
                               </Typography>
                             </Grid>
                           </Grid>

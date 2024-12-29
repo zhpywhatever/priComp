@@ -38,7 +38,7 @@ const ProductEditScreen = ({ history, match }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
-  const [brand, setBrand] = useState('');
+  const [platform, setPlatform] = useState('');
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
@@ -66,7 +66,7 @@ const ProductEditScreen = ({ history, match }) => {
         setName(product.name);
         setPrice(product.price);
         setImage(file);
-        setBrand(product.brand);
+        setPlatform(product.platform);
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
@@ -117,7 +117,7 @@ const ProductEditScreen = ({ history, match }) => {
         name,
         price,
         image,
-        brand,
+        platform,
         category,
         description,
         countInStock,
@@ -222,11 +222,11 @@ const ProductEditScreen = ({ history, match }) => {
                             <Grid item md={6} xs={12}>
                               <TextField
                                 fullWidth
-                                label="品牌"
-                                name="brand"
-                                onChange={e => setBrand(e.target.value)}
+                                label="平台"
+                                name="platform"
+                                onChange={e => setPlatform(e.target.value)}
                                 required
-                                value={brand}
+                                value={platform}
                                 variant="outlined"
                               />
                             </Grid>

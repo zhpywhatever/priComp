@@ -62,7 +62,7 @@ class Product(Base):
     name = Column(String(200), nullable=False)
     description = Column(Text, nullable=True)
     price = Column(Float, nullable=False)
-    rating = Column(Float, nullable=True)
+    rating = Column(Float, nullable=True, default=5)
     numReviews = Column(Integer, default=0)
     image = Column(String(255), nullable=True)
     category = Column(String(100), nullable=False)
@@ -85,7 +85,7 @@ class Product(Base):
         else:
             history_data = []
 
-        history_data.append({'price': new_price, 'timestamp': datetime.now().isoformat()})  # 保存时间戳
+        history_data.append({'price': new_price, 'timestamp': datetime.now().date().isoformat()})  # 保存时间戳
 
         self.history_price = json.dumps(history_data)  # 更新为新的历史价格数据
 

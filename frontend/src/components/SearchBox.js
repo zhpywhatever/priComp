@@ -111,7 +111,7 @@ const useStyles = makeStyles(theme => {
     },
   };
 });
-const SearchBox = ({ keyword, onSearch, clearSearch, ...props }) => {
+const SearchBox = ({ keyword, onSearch, clearSearch, onSpider, ...props }) => {
   const classes = useStyles();
   const productList = useSelector(state => state.productList);
   const { allProducts } = productList;
@@ -138,6 +138,12 @@ const SearchBox = ({ keyword, onSearch, clearSearch, ...props }) => {
       onSearch(keyword); // 调用传递的搜索回调函数
     
   };
+
+  const handleSpider = () => {
+    
+    onSpider(keyword); // 调用传递的搜索回调函数
+  
+};
 
   const handleClear = () => {
     clearSearch(); // 调用传递的清除回调函数
@@ -171,7 +177,7 @@ const SearchBox = ({ keyword, onSearch, clearSearch, ...props }) => {
         >
           筛选
         </Button> */}
-        {keyword && (
+        {/* {keyword && (
           <Button
             variant="outlined"
             color="secondary"
@@ -181,7 +187,16 @@ const SearchBox = ({ keyword, onSearch, clearSearch, ...props }) => {
           >
             清除搜索
           </Button>
-        )}
+        )} */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSpider}
+          className={classes.btn}
+          startIcon={<FilterListIcon />}
+        >
+          全网搜
+        </Button>
         <Button
           variant="contained"
           color="primary"

@@ -17,10 +17,18 @@ def init_browser():
     # if not driver:
     options = webdriver.ChromeOptions()
     # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
+    options.add_experimental_option('excludeSwitches', ['enable-automation'])  # 打开开发者模式
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.page_load_strategy = 'eager'
+    options.add_experimental_option("excludeSwitches", ['enable-automation']);
+    options.add_argument("--disable-extensions")  # 禁用扩展程序
+    options.add_argument("--disable-plugins")  # 禁用插件
+    options.add_argument("--disable-images")  # 禁用图片加载，节省带宽
+    options.add_argument('--disable-dev-shm-usage')  # 避免内存共享错误
+    options.add_argument("--log-level=3")  # 减少日志输出
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.implicitly_wait(5)
     driver.maximize_window()
 
     driver.set_page_load_timeout(300)
@@ -64,7 +72,7 @@ def search_product(keyword):
     load_cookies(driver)
     driver.refresh()  # 刷新页面以应用 Cookie
     # driver.get(f"https://search.jd.com/Search?keyword={urllib.parse.quote(keyword)}")
-    time.sleep(2)
+    time.sleep(10)
     login_symbol = driver.find_elements(By.CLASS_NAME, 'nickname')
     while len(login_symbol) == 0:
         driver.refresh()  # 刷新页面以应用 Cookie
