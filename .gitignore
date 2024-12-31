@@ -108,4 +108,4 @@ Desktop.ini
 # Ignore data folders
 data/
 
-.bin
+/backend/utils/model/pytorch_model.bin
