@@ -107,3 +107,5 @@ Desktop.ini
 
 # Ignore data folders
 data/
+
+.bin
