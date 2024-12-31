@@ -36,7 +36,7 @@ def get_product(db: Session,product_name:str):
 def get_products(db: Session, product_name: str):
     try:
         jd_products, tb_products = spider_get_products(product_name)
-
+        category = classify(product_name)
         # 处理京东商品
         for product in jd_products:
             existing_product = db.query(Product).filter(
@@ -47,7 +47,7 @@ def get_products(db: Session, product_name: str):
                 existing_product.name = product_name
                 existing_product.description = product[0]
                 existing_product.price = product[1]
-                existing_product.category = ""  # 你可以根据需要填充类别
+                existing_product.category = category  # 你可以根据需要填充类别
                 existing_product.image = product[3]
                 existing_product.countInStock = 0  # 这里可以根据需要更新库存
                 # existing_product.historyPrice.append(
@@ -62,7 +62,7 @@ def get_products(db: Session, product_name: str):
                     name=product_name,
                     description=product[0],
                     price=product[1],
-                    category="",
+                    category=category,
                     image=product[3],
                     countInStock=0,
                     historyPrice=[PriceHistory(price=product[1], timestamp=datetime.now().date().isoformat())],
@@ -82,9 +82,7 @@ def get_products(db: Session, product_name: str):
                 existing_product.name = product_name
                 existing_product.description = product[0]
                 existing_product.price = product[1]
-                existing_product.category = ""  # 你可以根据需要填充类别
                 existing_product.image = product[3]
-                existing_product.countInStock = 0  # 这里可以根据需要更新库存
                 existing_product.historyPrice.append(
                     PriceHistory(price=product[1], timestamp=datetime.now().date().isoformat()))
                 existing_product.url = product[2]
@@ -96,7 +94,7 @@ def get_products(db: Session, product_name: str):
                     name=product_name,
                     description=product[0],
                     price=product[1],
-                    category="",
+                    category=category,
                     image=product[3],
                     countInStock=0,
                     historyPrice=[PriceHistory(price=product[1], timestamp=datetime.now().date().isoformat())],

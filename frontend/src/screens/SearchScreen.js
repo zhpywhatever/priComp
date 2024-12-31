@@ -80,7 +80,8 @@ const SearchScreen = () => {
 const [page, setPage] = useState(1);  // 当前页
 const [pageSize, setPageSize] = useState(9);  // 每页显示数量
 const [totalPages, setTotalPages] = useState(1);  // 总页数（从后端获取）
-
+const [refresh, setRefresh] = useState(1);  // 总页数（从后端获取）
+  
   const fetchFilteredProducts = async () => {
     setLoading(true);
     setError(null);
@@ -98,6 +99,8 @@ const [totalPages, setTotalPages] = useState(1);  // 总页数（从后端获取
       const { data } = await axiosInstance.get(`/api/products?${priceRangeParams}`, { params });
       setProducts(data.products);  // 这里假设 API 返回的数据有 products 数组
     setTotalPages(data.total_pages);  // 假设 API 返回总页数
+    let searchData = JSON.stringify(keyword);
+    sessionStorage.setItem("searchData",searchData);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -113,8 +116,22 @@ const [totalPages, setTotalPages] = useState(1);  // 总页数（从后端获取
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axiosInstance.get(`/api/spider/get-products/${keyword}`);
-      // window.location.reload();
+      const { res } = await axiosInstance.get(`/api/spider/get-products/${keyword}`);
+      const params = {
+        keyword,
+        rating: filters.rating,
+        platform: filters.platform,
+        inStock: filters.inStock,
+        page: page, // 默认分页参数，可以根据需要动态设置
+      page_size: pageSize, // 默认分页大小
+      };
+      const priceRangeParams = filters.priceRange.map(value => `priceRange=${value}`).join('&');
+
+      const { data } = await axiosInstance.get(`/api/products?${priceRangeParams}`, { params });
+      setPage(1);  // 重置页码
+      setTotalPages(data.total_pages);  // 假设 API 返回总页数
+      setProducts(data.products);  // 这里假设 API 返回的数据有 products 数组
+      // 9090window.location.reload();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -125,8 +142,21 @@ const [totalPages, setTotalPages] = useState(1);  // 总页数（从后端获取
   // 使用 useEffect 来触发 fetch 操作
 useEffect(() => {
   window.scrollTo(0, 0);  // 每次进入页面时滚动到顶部
+  let searchData = JSON.parse(sessionStorage.getItem('searchData'));
+    if(searchData){
+      // console.log(searchData);
+      //直接setFieldsValue()可以把值赋值到表单里面
+      setKeyword(searchData);
+      setRefresh(searchData);
+      //setFilters(prev => ({ ...prev, keyword: searchData }));
+      //完了之后记得把本地的数据清除掉
+      //sessionStorage.removeItem("searchData");
+      fetchFilteredProducts();
+    }
+
   fetchFilteredProducts();
-}, [filters, page, pageSize]);  // 每次 filters、page 或 pageSize 变动时重新请求数据
+  
+}, [filters, page, pageSize,refresh]);  // 每次 filters、page 或 pageSize 变动时重新请求数据
 
   const handleFilterChange = newFilters => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));

@@ -218,7 +218,6 @@ const ProductListScreen = ({ history, match }) => {
                       <Box style={{ maxWidth: 500 }}>
                         <TextField
                           id="back-to-top-anchor"
-                          fullWidth
                           InputProps={{
                             startAdornment: (
                               <InputAdornment position="start">

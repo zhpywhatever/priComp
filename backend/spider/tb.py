@@ -16,7 +16,7 @@ def init_browser():
     # global driver
     # if not driver:
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
+    options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.page_load_strategy = 'eager'
@@ -93,10 +93,10 @@ def search_product(keyword):
         login_symbol = driver.find_elements(By.CLASS_NAME, 'site-nav-login-info-nick')
 
 
-    time.sleep(3)
+    time.sleep(2)
     # 抓取商品名称和价格
     driver.execute_script('window.scrollTo(0,1000)')  # 横坐标不变，纵坐标 滚动到1000像素点
-    time.sleep(2)  # 等待一段时间，方便查看滚动的效果
+    time.sleep(1)  # 等待一段时间，方便查看滚动的效果
     product_elements = driver.find_elements(By.XPATH, '//*[@id="content_items_wrapper"]/div[*]')
     results = []
     for product in product_elements[:10]:  # 获取前10个商品

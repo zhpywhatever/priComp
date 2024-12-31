@@ -399,6 +399,18 @@ const ProductScreen = ({ history, match }) => {
                         </Typography>
                         </ListItem>
                         <ListItem className={classes.listitem}>
+                        <Typography style={{ width: '100%' ,marginRight: '1rem'}}>
+                            <Button
+                              startIcon={<AddShoppingCartIcon />}
+                              onClick={addToCartHandler}
+                              variant="contained"
+                              color="primary"
+                              className={classes.addtocartbtn}
+                              disabled={product.countInStock === 0}
+                            >
+                              添加到购物车
+                            </Button>
+                          </Typography>
                           <Typography style={{ width: '100%' }}>
                             <Button
                               startIcon={product.platform === 'tb'?<img src={taobaoIcon} alt="taobao" style={{ width: 24, height: 24 }}  />:<img src={jdIcon} alt="jingdong" style={{ width: 24, height: 24 }}  />} 

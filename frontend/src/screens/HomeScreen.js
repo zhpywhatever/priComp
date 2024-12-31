@@ -118,6 +118,8 @@ const HomeScreen = ({ match }) => {
   useEffect(() => {
     console.log("clickedCategory",clickedCategory);
     console.log("allProducts:",allProducts)
+    sessionStorage.removeItem("searchData");
+
   }, [clickedCategory]);
   const filteredCategoryProducts = allProducts?.filter(product =>
     product.category?.toLowerCase().includes(clickedCategory?.toLowerCase())

@@ -16,7 +16,7 @@ def init_browser():
     # global driver
     # if not driver:
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
+    options.add_argument("--headless")  # 如果不需要界面，可以使用 headless 模式
     options.add_experimental_option('excludeSwitches', ['enable-automation'])  # 打开开发者模式
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -72,7 +72,6 @@ def search_product(keyword):
     load_cookies(driver)
     driver.refresh()  # 刷新页面以应用 Cookie
     # driver.get(f"https://search.jd.com/Search?keyword={urllib.parse.quote(keyword)}")
-    time.sleep(10)
     login_symbol = driver.find_elements(By.CLASS_NAME, 'nickname')
     while len(login_symbol) == 0:
         driver.refresh()  # 刷新页面以应用 Cookie
@@ -92,9 +91,9 @@ def search_product(keyword):
         print("搜索框不可交互:", e)
         driver.quit()
         return
-    time.sleep(3)  # 等待页面加载
+    time.sleep(2)  # 等待页面加载
     driver.execute_script('window.scrollTo(0,1000)')  # 横坐标不变，纵坐标 滚动到1000像素点
-    time.sleep(2)  # 等待一段时间，方便查看滚动的效果
+    time.sleep(1)  # 等待一段时间，方便查看滚动的效果
     # 抓取商品名称和价格
     product_elements = driver.find_elements(By.XPATH, '//*[@id="J_goodsList"]/ul/li[*]')
     results = []
