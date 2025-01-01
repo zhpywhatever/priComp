@@ -8,3 +8,5 @@ sqlalchemy
 fastapi
 selenium
 webdriver_manager
+transformers
+tensorflow
