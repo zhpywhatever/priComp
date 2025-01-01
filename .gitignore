@@ -109,3 +109,4 @@ Desktop.ini
 data/
 
 /backend/utils/model/pytorch_model.bin
+/backend/utils/model/pytorch_model.zip
